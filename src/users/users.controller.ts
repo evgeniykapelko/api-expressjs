@@ -1,3 +1,5 @@
+import { UserRegisterDto } from './dto/user.register.dto';
+import { UserLoginDto } from './dto/user.login.dto';
 import { IUserController } from './users.controller.interface';
 import { TYPES } from './../types';
 import { ILogger } from './../logger/logger.interface';
@@ -27,11 +29,11 @@ export class UsersController extends BaseController implements IUserController {
         ])
     }
 
-    login (req: Request, res: Response, next: NextFunction) {
+    login (req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction) {
         next(new HTTPError(401, 'Error Authentication', 'login'));
     }
 
-    register (req: Request, res: Response, next: NextFunction) {
+    register (req: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction) {
         this.ok(res, 'register');
     }
 }

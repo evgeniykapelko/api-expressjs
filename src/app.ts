@@ -6,6 +6,7 @@ import { LoggerService } from './logger/logger.service';
 import express, { Express } from "express"
 import { Server } from 'http';
 import { inject, injectable } from 'inversify';
+import { json } from 'body-parser';
 import 'reflect-metadata';
 
 @injectable()
@@ -23,15 +24,20 @@ export class App {
         this.port = 9005;
     }
 
-    useRoutes() {
+    useMiddleware(): void {
+        this.app.use(json())
+    }
+
+    useRoutes(): void {
         this.app.use('/users', this.userController.router);
     }
 
-    useExeptionFilters() {
+    useExeptionFilters(): void {
         this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
     }
 
-    public async init () {
+    public async init (): Promise<void> {
+        this.useMiddleware();
         this.useRoutes();
         this.useExeptionFilters();
         this.server = this.app.listen(this.port);
