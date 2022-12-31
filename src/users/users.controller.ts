@@ -1,3 +1,4 @@
+import { User } from './user.entity';
 import { UserRegisterDto } from './dto/user.register.dto';
 import { UserLoginDto } from './dto/user.login.dto';
 import { IUserController } from './users.controller.interface';
@@ -33,7 +34,9 @@ export class UsersController extends BaseController implements IUserController {
         next(new HTTPError(401, 'Error Authentication', 'login'));
     }
 
-    register (req: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction) {
-        this.ok(res, 'register');
+    async register ({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
+        const newUser = new User(body.email, body.name);
+        await newUser.setPassword(body.password);
+        this.ok(res, newUser);
     }
 }
