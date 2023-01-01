@@ -23,7 +23,7 @@ export class App {
         @inject(TYPES.ILogger) private logger: ILogger,
         @inject(TYPES.UserController) private userController: UsersController,
         @inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
-        @inject(TYPES.ConfigService) private ConfigService: IConfigService,
+        @inject(TYPES.ConfigService) private сonfigService: IConfigService,
     ) {
         this.app = express();
         this.port = 9010;

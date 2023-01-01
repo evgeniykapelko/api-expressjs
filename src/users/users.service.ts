@@ -10,10 +10,12 @@ import "reflect-metadata";
 
 @injectable()
 export class UsersService implements IUsersService {
-    constructor(@inject(TYPES.ConfigService) private ConfigService: IConfigService) {}
+    constructor(@inject(TYPES.ConfigService) private сonfigService: IConfigService) {}
     async createUser ({email, name, password}: UserRegisterDto): Promise<User | null> {
         const newUser = new User(email, name);
-        await newUser.setPassword(password);
+        const salt = this.сonfigService.get('SALT');
+        await newUser.setPassword(password, Number(salt));
+        
         return null;
     }
 

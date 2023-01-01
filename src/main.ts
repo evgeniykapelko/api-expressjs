@@ -13,11 +13,11 @@ import { UsersService } from './users/users.service';
 import { ConfigService } from './config/config.service';
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-    bind<ILogger>(TYPES.ILogger).to(LoggerService);
+    bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
     bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
     bind<IUserController>(TYPES.UserController).to(UsersController);
     bind<IUsersService>(TYPES.UsersService).to(UsersService);
-    bind<IConfigService>(TYPES.ConfigService).to(ConfigService);
+    bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
     bind<App>(TYPES.Application).to(App);
 });
 
