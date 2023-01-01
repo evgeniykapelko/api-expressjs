@@ -1,3 +1,7 @@
+import { IExeptionFilter } from './errors/exeption.filter.interface';
+import { IConfigService } from './config/config.service.interface';
+import { IUserController } from './users/users.controller.interface';
+import { ConfigService } from './config/config.service';
 import { TYPES } from './types';
 import { ILogger } from './logger/logger.interface';
 import { ExeptionFilter } from './errors/exeption.filter';
@@ -18,10 +22,11 @@ export class App {
     constructor (
         @inject(TYPES.ILogger) private logger: ILogger,
         @inject(TYPES.UserController) private userController: UsersController,
-        @inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
+        @inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
+        @inject(TYPES.ConfigService) private ConfigService: IConfigService,
     ) {
         this.app = express();
-        this.port = 9005;
+        this.port = 9010;
     }
 
     useMiddleware(): void {

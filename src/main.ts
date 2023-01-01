@@ -1,3 +1,4 @@
+import { IConfigService } from './config/config.service.interface';
 import { IUsersService } from './users/users.service.interface';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { ILogger } from './logger/logger.interface';
@@ -9,13 +10,14 @@ import { LoggerService } from './logger/logger.service';
 import { UsersController } from './users/users.controller';
 import { IUserController } from './users/users.controller.interface';
 import { UsersService } from './users/users.service';
-
+import { ConfigService } from './config/config.service';
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
     bind<ILogger>(TYPES.ILogger).to(LoggerService);
     bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
     bind<IUserController>(TYPES.UserController).to(UsersController);
     bind<IUsersService>(TYPES.UsersService).to(UsersService);
+    bind<IConfigService>(TYPES.ConfigService).to(ConfigService);
     bind<App>(TYPES.Application).to(App);
 });
 
