@@ -1,3 +1,4 @@
+import { ValidateMiddleware } from './../common/validate.middleware';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { UserRegisterDto } from './dto/user.register.dto';
@@ -24,7 +25,8 @@ export class UsersController extends BaseController implements IUserController {
             {
                 path: '/register',
                 method: 'post',
-                func: this.register
+                func: this.register,
+                middlewares: [new ValidateMiddleware(UserRegisterDto)]
             },
             {
                 path: '/login',
