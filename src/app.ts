@@ -1,3 +1,4 @@
+import { PrismaService } from './database/prisma.service';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { IConfigService } from './config/config.service.interface';
 import { IUserController } from './users/users.controller.interface';
@@ -24,9 +25,11 @@ export class App {
         @inject(TYPES.UserController) private userController: UsersController,
         @inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
         @inject(TYPES.ConfigService) private сonfigService: IConfigService,
+        @inject(TYPES.PrismaService) private prismaService: PrismaService,
+
     ) {
         this.app = express();
-        this.port = 9010;
+        this.port = 9011;
     }
 
     useMiddleware(): void {
@@ -45,6 +48,7 @@ export class App {
         this.useMiddleware();
         this.useRoutes();
         this.useExeptionFilters();
+        await this.prismaService.connect();
         this.server = this.app.listen(this.port);
         this.logger.log(`Server work on http://localhost:${this.port}`);
     }

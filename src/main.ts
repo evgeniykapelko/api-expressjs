@@ -1,3 +1,5 @@
+import { PrismaService } from './database/prisma.service';
+import { PrismaClient } from '@prisma/client';
 import { IConfigService } from './config/config.service.interface';
 import { IUsersService } from './users/users.service.interface';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
@@ -17,6 +19,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
     bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
     bind<IUserController>(TYPES.UserController).to(UsersController);
     bind<IUsersService>(TYPES.UsersService).to(UsersService);
+    bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
     bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
     bind<App>(TYPES.Application).to(App);
 });
