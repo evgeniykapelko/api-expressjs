@@ -1,3 +1,4 @@
+import { IUsersRepository } from './users/users.repository.interface';
 import { PrismaService } from './database/prisma.service';
 import { PrismaClient } from '@prisma/client';
 import { IConfigService } from './config/config.service.interface';
@@ -13,6 +14,7 @@ import { UsersController } from './users/users.controller';
 import { IUserController } from './users/users.controller.interface';
 import { UsersService } from './users/users.service';
 import { ConfigService } from './config/config.service';
+import { UsersRepository } from './users/users.repository';
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
     bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
@@ -21,6 +23,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
     bind<IUsersService>(TYPES.UsersService).to(UsersService);
     bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
     bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+    bind<IUsersRepository>(TYPES.UsersRepository).to(UsersRepository).inSingletonScope();
     bind<App>(TYPES.Application).to(App);
 });
 
