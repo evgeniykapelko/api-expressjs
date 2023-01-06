@@ -1,3 +1,4 @@
+import { IUsersService } from './users.service.interface';
 import { ValidateMiddleware } from './../common/validate.middleware';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
@@ -12,13 +13,16 @@ import { LoggerService } from "../logger/logger.service";
 import { NextFunction, Response, Request  } from "express";
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
+import { sign } from 'jsonwebtoken';
+import { IConfigService } from '../config/config.service.interface';
 
 @injectable()
 export class UsersController extends BaseController implements IUserController {
     constructor(
         @inject(TYPES.ILogger) private loggerService: ILogger,
-        @inject(TYPES.UsersService) private userService: UsersService
-     ) {
+        @inject(TYPES.UsersService) private userService: IUsersService,
+        @inject(TYPES.ConfigService) private configService: IConfigService
+    ) {
         super(loggerService);
 
         this.bindRoutes([
@@ -45,7 +49,9 @@ export class UsersController extends BaseController implements IUserController {
             return next(new HTTPError(401, 'Error Authentication', 'login'));
         }
         
-        this.ok(res, {});
+        const jwt = await this.signJWT(req.body.email, this.configService.get('SECRET'));
+
+        this.ok(res, { jwt });
 
     }
 
@@ -57,5 +63,23 @@ export class UsersController extends BaseController implements IUserController {
         }
 
         this.ok(res, {email: result.email, id: result.id});
+    }
+
+    private signJWT(email: string, secret: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            sign({
+                email,
+                iat: Math.floor(Date.now() / 1000),
+            }, secret,
+            {
+                algorithm: 'HS256',
+            },
+            (err, token) => {
+                if (err) {
+                   reject(); 
+                }
+                resolve(token as string)
+            });
+        });
     }
 }
