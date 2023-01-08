@@ -1,3 +1,4 @@
+import { AuthMiddleware } from './common/auth.middleware';
 import { PrismaService } from './database/prisma.service';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { IConfigService } from './config/config.service.interface';
@@ -33,7 +34,9 @@ export class App {
     }
 
     useMiddleware(): void {
-        this.app.use(json())
+        this.app.use(json());
+        const authMiddleware = new AuthMiddleware(this.сonfigService.get('SECRET'));
+        this.app.use(authMiddleware.execute.bind(authMiddleware));
     }
 
     useRoutes(): void {

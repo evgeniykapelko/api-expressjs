@@ -33,7 +33,7 @@ export class UsersService implements IUsersService {
     }
 
     async validateUser ({email, password}: UserLoginDto): Promise<boolean> {
-        const existedUser = await this.usersRepository.find(dto.email);
+        const existedUser = await this.usersRepository.find(email);
 
         if (!existedUser) {
             return false;
