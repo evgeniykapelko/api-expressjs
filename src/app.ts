@@ -27,7 +27,6 @@ export class App {
         @inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
         @inject(TYPES.ConfigService) private сonfigService: IConfigService,
         @inject(TYPES.PrismaService) private prismaService: PrismaService,
-
     ) {
         this.app = express();
         this.port = 9011;
@@ -54,5 +53,9 @@ export class App {
         await this.prismaService.connect();
         this.server = this.app.listen(this.port);
         this.logger.log(`Server work on http://localhost:${this.port}`);
+    }
+
+    public close(): void {
+        this.server.close();
     }
 }
